@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Check your email | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="auth-single">
+  <h1>Check your email</h1>
+  <p class="lead">We sent a confirmation link to <strong>{{ email }}</strong>. Open it, then sign in.</p>
+  <p class="alt">The link works for a few days. No email? Look in your spam folder, or <a href="{% url 'login' %}">go to sign in</a>.</p>
+</section>
+{% endblock %}

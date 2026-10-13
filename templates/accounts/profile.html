@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Profile | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="form-page">
+  <h1>Your profile</h1>
+  <p class="lead">Student ID <strong class="mono">{{ user.student_id }}</strong>. It can't be changed.</p>
+
+  {% if not user.email_verified %}
+    <div class="notice">
+      <p>Your email isn't confirmed yet.</p>
+      <form method="post" action="{% url 'resend_verification' %}" class="inline-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-quiet btn-small">Send a confirmation link</button>
+      </form>
+    </div>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "partials/_form_errors.html" %}
+
+    <div class="field-row">
+      {% include "partials/_field.html" with field=form.first_name %}
+      {% include "partials/_field.html" with field=form.last_name %}
+    </div>
+    {% include "partials/_field.html" with field=form.email %}
+    <div class="field-row">
+      {% include "partials/_field.html" with field=form.phone %}
+      {% include "partials/_field.html" with field=form.date_of_birth %}
+    </div>
+    <div class="field-row">
+      {% include "partials/_field.html" with field=form.program %}
+      {% include "partials/_field.html" with field=form.year_of_study %}
+    </div>
+    {% include "partials/_field.html" with field=form.bio %}
+
+    <button type="submit" class="btn btn-primary">Save profile</button>
+  </form>
+</section>
+{% endblock %}

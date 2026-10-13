@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Security | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <h1>Security</h1>
+  <p class="lead">Keep your account yours.</p>
+</header>
+
+<div class="security-grid">
+  <section aria-labelledby="pw-heading">
+    <h2 id="pw-heading">Password</h2>
+    <p>Pick something long that you don't use anywhere else.</p>
+    <a class="btn btn-quiet" href="{% url 'password_change' %}">Change password</a>
+  </section>
+
+  <section aria-labelledby="dev-heading">
+    <h2 id="dev-heading">Other devices</h2>
+    <p>If you signed in on a shared computer, sign it out from here.</p>
+    <form method="post" action="{% url 'signout_others' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-quiet">Sign out other devices</button>
+    </form>
+  </section>
+</div>
+
+<section aria-labelledby="activity-heading" class="block">
+  <h2 id="activity-heading">Sign-in activity</h2>
+  <p>Your last 15 attempts. If one looks wrong, change your password.</p>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th scope="col">When</th><th scope="col">Result</th><th scope="col">Device</th><th scope="col">Address</th></tr></thead>
+      <tbody>
+        {% for event in events %}
+          <tr>
+            <td>{{ event.created_at|date:"j M Y, H:i" }}</td>
+            <td><span class="pill {% if event.success %}pill-ok{% else %}pill-bad{% endif %}">{% if event.success %}Signed in{% else %}Wrong password{% endif %}</span></td>
+            <td>{{ event.device }}</td>
+            <td>{{ event.ip_address|default:"unknown" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4">Nothing recorded yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="danger-heading" class="block danger-zone">
+  <h2 id="danger-heading">Delete account</h2>
+  <p>This removes your profile and sign-in history for good.</p>
+  <a class="btn btn-danger" href="{% url 'delete_account' %}">Delete my account</a>
+</section>
+{% endblock %}

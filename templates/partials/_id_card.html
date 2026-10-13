@@ -1,0 +1,18 @@
+<article class="id-card{% if placeholder %} is-placeholder{% endif %}" style="--hue: {{ hue|default:172 }}" aria-label="Student ID card">
+  <div class="id-top">
+    <span class="id-school">{{ SITE_NAME }}</span>
+    <span class="id-kind">Student ID</span>
+  </div>
+  <div class="id-body">
+    <div class="id-avatar" data-card-initials>{{ initials|default:"?" }}</div>
+    <div class="id-who">
+      <p class="id-name" data-card-name>{{ name }}</p>
+      <p class="id-program" data-card-program>{{ program }}</p>
+      <p class="id-year" data-card-year>{% if year %}Year {{ year }}{% endif %}</p>
+    </div>
+  </div>
+  <div class="id-strip">
+    <span>ID number</span>
+    <strong data-card-id>{{ student_id }}</strong>
+  </div>
+</article>

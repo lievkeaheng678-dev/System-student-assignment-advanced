@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Sign in | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="auth-single">
+  <h1>Sign in</h1>
+  <p class="lead">Use your email address or your student ID number.</p>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "partials/_form_errors.html" %}
+    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+
+    {% include "partials/_field.html" with field=form.username %}
+    {% include "partials/_field.html" with field=form.password %}
+    {% include "partials/_field.html" with field=form.remember_me %}
+
+    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+  </form>
+
+  <p class="alt"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+  <p class="alt">New here? <a href="{% url 'register' %}">Create an account</a></p>
+
+  {% if DEMO_MODE %}
+    <div class="demo-note">
+      <p><strong>Demo student</strong></p>
+      <p class="mono">{{ DEMO_EMAIL }}<br>{{ DEMO_PASSWORD }}</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+  <h1>Hello, {{ user.first_name }}</h1>
+  <p class="lead">{% if open_tasks %}{{ open_tasks }} thing{{ open_tasks|pluralize }} left to finish your profile.{% else %}Your profile is complete.{% endif %}</p>
+</header>
+
+<div class="dash-grid">
+  <section aria-label="Your student card">
+    {% include "partials/_id_card.html" with name=user.full_name initials=user.initials hue=user.avatar_hue program=user.program year=user.year_of_study student_id=user.student_id %}
+    <p class="side-note">Joined {{ user.date_joined|date:"j F Y" }}. Sign in with this ID or your email.</p>
+  </section>
+
+  <section aria-labelledby="setup-heading" class="setup">
+    <h2 id="setup-heading">Profile progress</h2>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ user.profile_completeness }}" aria-label="Profile completeness">
+      <div class="progress-bar" style="width: {{ user.profile_completeness }}%"></div>
+    </div>
+    <p class="progress-label">{{ user.profile_completeness }}% complete</p>
+
+    <ul class="checklist">
+      {% for item in checklist %}
+        <li class="{% if item.done %}done{% endif %}">
+          <span class="tick" aria-hidden="true">{% if item.done %}&#10003;{% endif %}</span>
+          <span class="check-text">{{ item.label }}{% if item.done %}<span class="sr-only"> (done)</span>{% endif %}</span>
+          {% if not item.done %}
+            {% if item.kind == "verify" %}
+              <form method="post" action="{% url 'resend_verification' %}" class="inline-form">
+                {% csrf_token %}
+                <button type="submit" class="link-button">Send link</button>
+              </form>
+            {% else %}
+              <a href="{% url 'profile' %}">Add</a>
+            {% endif %}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+
+<section aria-labelledby="recent-heading" class="block">
+  <h2 id="recent-heading">Recent sign-ins</h2>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th scope="col">When</th><th scope="col">Device</th><th scope="col">Address</th></tr></thead>
+      <tbody>
+        {% for event in recent_logins %}
+          <tr>
+            <td>{{ event.created_at|date:"j M Y, H:i" }}</td>
+            <td>{{ event.device }}</td>
+            <td>{{ event.ip_address|default:"unknown" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3">Nothing recorded yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="alt"><a href="{% url 'security' %}">See all activity and security options</a></p>
+</section>
+{% endblock %}

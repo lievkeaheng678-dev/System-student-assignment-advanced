@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <h1>Sign in with your email or your student ID.</h1>
+    <p class="lead">Register once and your student ID number is issued on the spot. Your profile, your sign-in history and your security settings all live in one place.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="{% url 'register' %}">Create your account</a>
+      <a class="btn btn-quiet" href="{% url 'login' %}">I already have one</a>
+    </div>
+
+    {% if DEMO_MODE %}
+      <div class="demo-note">
+        <p><strong>Try it without signing up.</strong> Use the shared demo student:</p>
+        <p class="mono">{{ DEMO_EMAIL }}<br>{{ DEMO_PASSWORD }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="hero-card">
+    {% include "partials/_id_card.html" with name="Alex Demo" initials="AD" hue=172 program="Computer Science" year=2 student_id="STU-2026-48213" %}
+  </div>
+</section>
+
+<section class="facts">
+  <dl>
+    <div><dt>Instant student ID</dt><dd>Issued the moment you register, and it works as a sign-in name.</dd></div>
+    <div><dt>Know who is signing in</dt><dd>Every sign-in is logged, so you can spot one that wasn't you and sign other devices out.</dd></div>
+    <div><dt>Locked against guessing</dt><dd>Repeated wrong passwords pause the account for a few minutes instead of letting anyone keep trying.</dd></div>
+  </dl>
+</section>
+{% endblock %}

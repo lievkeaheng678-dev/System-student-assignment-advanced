@@ -1,0 +1,2 @@
+# Keep Unix line endings so files behave the same on Windows and on Render.
+* text=auto eol=lf

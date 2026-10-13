@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Delete account | {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="auth-single">
+  <h1>Delete your account</h1>
+  <p class="lead">Your profile, student ID and sign-in history will be removed and can't be recovered.</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include "partials/_form_errors.html" %}
+    {% include "partials/_field.html" with field=form.password %}
+    {% include "partials/_field.html" with field=form.confirm %}
+    <button type="submit" class="btn btn-danger btn-block">Delete my account</button>
+  </form>
+  <p class="alt"><a href="{% url 'security' %}">Keep my account</a></p>
+</section>
+{% endblock %}
