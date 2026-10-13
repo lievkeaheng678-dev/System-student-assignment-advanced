@@ -13,9 +13,7 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
-  {% if DEMO_MODE %}
-    <div class="demo-bar">Demo site: don't reuse a real password here, and expect the data to be wiped now and then.</div>
-  {% endif %}
+
 
   <header class="topbar">
     <a class="brand" href="{% url 'home' %}">{{ SITE_NAME }}</a>
